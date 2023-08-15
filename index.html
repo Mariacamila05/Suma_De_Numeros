@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculadora de Suma</title>
+    <!-- Agrega la siguiente línea para cargar Bootstrap CSS desde una CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Agrega la siguiente línea para cargar Font Awesome CSS desde una CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        #header {
+            background-color: #000E75;
+            color: #ffffff;
+            padding: 20px 0;
+            text-align: center;
+            animation: fadeInUp 1s both;
+        }
+
+        #logo {
+            float: left;
+            margin-right: 10px;
+            animation: fadeInLeft 1s both;
+        }
+
+        #container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px auto;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 1s both;
+        }
+
+        .btn {
+            border-radius: 10px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        .btn-success:hover {
+            background-color: #1c7430;
+            border-color: #1c7430;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #555e66;
+            border-color: #555e66;
+        }
+
+        .form-label {
+            font-weight: bold;
+        }
+
+        .form-control {
+            border-radius: 10px;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="header">
+        <div class="container">
+        
+            <div class="mb-2">
+                <label class="form-label">Maria Camila Mendez Peña</label>
+            </div>
+            <div class="mb-2">
+                <label class="form-label">758365</label>
+            </div>
+            <div class="mb-2">
+                <label class="form-label">Ingenieria de sistemas</label>
+            </div>
+        </div>
+    </div>
+
+<div class="container" id="container">
+    <div class="mb-3">
+        <h1>Calculadora de Suma</h1>
+    </div>
+    <div class="mb-3">
+        <label for="numeros" class="form-label">Ingrese los números a sumar:</label>
+        <input type="number" class="form-control" id="numeros" placeholder="Ingrese un número">
+    </div>
+    <button type="button" class="btn btn-primary mb-3" id="agregar"><i class="fas fa-plus"></i> Agregar Número</button>
+    <button type="button" class="btn btn-success mb-3" id="sumar"><i class="fas fa-calculator"></i> Sumar</button>
+    
+    <div class="mb-3">
+        <p class="fw-bold" id="result"></p>
+        <p class="fw-bold" id="sumarTotalLabel"></p>
+        <p class="fw-bold" id="sumarPrimerosLabel"></p>
+        <p class="fw-bold" id="factorialLabel"></p>
+    </div>
+
+    <button type="button" class="btn btn-secondary" id="limpiar"><i class="fas fa-trash"></i> Limpiar</button>
+</div>
+        
+ <script>
+            var numerosIngresados = [];
+            var sumaTotal = 0;
+            var resultDiv = document.getElementById("result");
+            var numerosInput = document.getElementById("numeros");
+            var agregarButton = document.getElementById("agregar");
+            var sumarButton = document.getElementById("sumar");
+            var limpiarButton = document.getElementById("limpiar");
+            var sumarTotalLabel = document.getElementById("sumarTotalLabel");
+            var sumarPrimerosLabel = document.getElementById("sumarPrimerosLabel");
+            var factorialLabel = document.getElementById("factorialLabel");
+        
+            agregarButton.addEventListener("click", function () {
+                var numeros = parseFloat(numerosInput.value);
+                if (!isNaN(numeros)) {
+                    numerosIngresados.push(numeros);
+                    resultDiv.innerHTML = "Números ingresados: " + numerosIngresados.join(", ");
+                    numerosInput.value = "";
+                } else {
+                    alert("Por favor, ingrese un valor numérico válido.");
+                }
+            });
+        
+            sumarButton.addEventListener("click", function () {
+                sumaTotal = sumarNumeros();
+                actualizarSumaTotalLabel();
+                actualizarSumaPrimerosLabel();
+                calcularFactorial();
+            });
+        
+            limpiarButton.addEventListener("click", function () {
+                numerosIngresados = [];
+                sumaTotal = 0;
+                resultDiv.innerHTML = "";
+                sumarTotalLabel.innerHTML = "";
+                sumarPrimerosLabel.innerHTML = "";
+                factorialLabel.innerHTML = "";
+                numerosInput.value = "";
+            });
+        
+            function actualizarSumaTotalLabel() {
+                sumarTotalLabel.innerHTML = "Suma total de los números: " + sumaTotal;
+            }
+        
+            function actualizarSumaPrimerosLabel() {
+                var sumaPrimeros = sumarPrimerosNumeros();
+                sumarPrimerosLabel.innerHTML = "Suma de los primeros números: " + sumaPrimeros;
+            }
+        
+            function calcularFactorial() {
+                var factorial = 1;
+                for (var i = 1; i <= sumaTotal; i++) {
+                    factorial *= i;
+                }
+                var factorialString = factorial.toString();
+                if (factorialString.length > 5) {
+                    factorialString = factorialString.substring(0, 5);
+                }
+                factorialLabel.innerHTML = "la factorial del numero " +sumaTotal+ " es: "+ factorialString;
+            }
+        
+            function sumarNumeros() {
+                var suma = 0;
+                for (var i = 0; i < numerosIngresados.length; i++) {
+                    suma += numerosIngresados[i];
+                }
+                return suma;
+            }
+        
+            function sumarPrimerosNumeros() {
+                var sumaPrimeros = 0;
+                var cantidadNumeros = Math.ceil(numerosIngresados.length / 2);
+                for (var i = 0; i < cantidadNumeros; i++) {
+                    sumaPrimeros += numerosIngresados[i];
+                }
+                return sumaPrimeros;
+            }
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
